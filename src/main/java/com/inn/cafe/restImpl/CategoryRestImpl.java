@@ -37,11 +37,9 @@ public class CategoryRestImpl implements CategoryRest {
     @Override
     public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
         try {
-            if(!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")){
-                return new ResponseEntity<List<Category>>(categoryDao.getAllCategory(),HttpStatus.OK);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return categoryServices.getAllCategory(filterValue);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -51,8 +49,8 @@ public class CategoryRestImpl implements CategoryRest {
     public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
         try {
             return categoryServices.updateCategory(requestMap);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
