@@ -1,5 +1,6 @@
 package com.inn.cafe.serviceImpl;
 
+import com.google.common.base.Strings;
 import com.inn.cafe.JWT.JwtFilter;
 import com.inn.cafe.POJO.Category;
 import com.inn.cafe.contents.CafeConstants;
@@ -11,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class CategoryServiceImpl implements CategoryServices {
@@ -65,11 +68,41 @@ public class CategoryServiceImpl implements CategoryServices {
 
     @Override
     public ResponseEntity<List<Category>> getAllCategory(String filterValue) {
-        return null;
+        try {
+            if(!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true")) {
+                return new ResponseEntity<List<Category>>(categoryDao.getAllCategory(), HttpStatus.OK);
+            }
+
+            return new ResponseEntity<>(categoryDao.findAll(), HttpStatus.OK);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new ResponseEntity<List<Category>>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override
     public ResponseEntity<String> updateCategory(Map<String, String> requestMap) {
-        return null;
+        try {
+            if(jwtFilter.isAdmin()) {
+                if(validateCategoryMap(requestMap, true)) {
+                    Optional optional = categoryDao.findById(Integer.parseInt(requestMap.get("id")));
+                    if(!optional.isEmpty()) {
+                        categoryDao.save(getCategoryFromMap(requestMap, true));
+                        return CafeUtils.getResponseEntity("Category updated successfully.", HttpStatus.OK);
+                    } else {
+                        return CafeUtils.getResponseEntity("Category id doesn't exist.", HttpStatus.OK);
+                    }
+                } else {
+                    return CafeUtils.getResponseEntity(CafeConstants.INVALID_DATA, HttpStatus.BAD_REQUEST);
+                }
+            } else {
+                return CafeUtils.getResponseEntity(CafeConstants.UNATHORIZED_ACCESS, HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
