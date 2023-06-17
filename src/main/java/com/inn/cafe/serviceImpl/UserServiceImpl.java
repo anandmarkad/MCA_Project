@@ -175,16 +175,15 @@ public class UserServiceImpl implements UserService {
                     userObj.setPassword(requestMap.get("newPassword"));
                     userDao.save(userObj);
                     return CafeUtils.getResponseEntity("Password updated successfully.", HttpStatus.OK);
-                } else {
+                }
+                else {
                     return CafeUtils.getResponseEntity("Incorrect old password.", HttpStatus.BAD_REQUEST);
                 }
             }
-
             return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -192,14 +191,11 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<String> forgotPassword(Map<String, String> requestMap) {
         try {
             User user = userDao.findByEmail(requestMap.get("email"));
-
-            if(!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail())) {
+            if(!Objects.isNull(user) && !Strings.isNullOrEmpty(user.getEmail()))
                 emailUtils.forgotMail(user.getEmail(), "Credentials by Cafe Management System", user.getPassword());
-            }
-
             return CafeUtils.getResponseEntity("Check your email for Credentials.", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
 
         return CafeUtils.getResponseEntity(CafeConstants.SOMETHING_WENT_WRONG, HttpStatus.INTERNAL_SERVER_ERROR);
