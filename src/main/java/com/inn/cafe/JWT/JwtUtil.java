@@ -13,12 +13,15 @@ import java.util.function.Function;
 
 @Service
 public class JwtUtil {
-    private String secret ="Abhi$hek@1712";
+    private String secret ="abhishek";
+
 
     public String extractUserName(String token) {
-    return extractClaims(token,Claims::getSubject);
+
+        return extractClaims(token,Claims::getSubject);
     }
     public Date extractExpiration(String token) {
+
         return extractClaims(token,Claims::getExpiration);
     }
 
@@ -29,8 +32,10 @@ public class JwtUtil {
     public Claims extractAllClaims(String token){
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
     }
-    private Boolean isTokenExpired(String token){
+    private Boolean isTokenExpired(String token)
+    {
         return extractExpiration(token).before(new Date());
+
     }
     public String generateToken(String username,String role){
         Map<String,Object> claims = new HashMap<>();

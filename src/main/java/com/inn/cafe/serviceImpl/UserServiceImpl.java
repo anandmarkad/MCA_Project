@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<String> checkToken() {
+
         return CafeUtils.getResponseEntity("true", HttpStatus.OK);
     }
 
