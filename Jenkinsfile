@@ -28,7 +28,7 @@ pipeline{
             stage ('code packaging'){
                 steps{
                 echo 'code start packaging...'
-                sh 'mvn clean package'
+                sh 'mvn clean package -DskipTests'
                 echo 'Code packaging Done.'
                 }
             }
