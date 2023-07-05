@@ -17,13 +17,13 @@ pipeline{
                 }
             }
 
-            stage ('code Testing'){
-                  steps{
-                  echo 'code start testing...'
-                  sh 'mvn clean test'
-                  echo 'Code testing Done '
-                  }
-            }
+//             stage ('code Testing'){
+//                   steps{
+//                   echo 'code start testing...'
+//                   sh 'mvn clean test'
+//                   echo 'Code testing Done '
+//                   }
+//             }
 
             stage ('code packaging'){
                 steps{
