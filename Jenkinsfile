@@ -33,14 +33,12 @@ pipeline{
                 }
             }
 
-//             stage ('code compilation'){
+//             stage ('upload artifect to S3 bucket'){
 //                  steps{
-//                        script{
-//                        withCredentials([String(credentialsId:'S3_Backend')])
-//                                       {
-//                                       sh '
-//                                       }
-//                         }
+//                         withAWS(credentials: 'S3_Backend', region: 'us-east-1') {
+                                              echo 'Uploading to S3...'
+                                              s3Upload(file:'/var/lib/jenkins/workspace/cafe/target/com.inn.cafe-0.0.1-SNAPSHOT.jar', bucket:'dominos1', path:'dominos1/com.inn.cafe-0.0.1-SNAPSHOT.jar')
+                                              echo 'S3 upload Done.'
 //                  }
 //             }
         }
