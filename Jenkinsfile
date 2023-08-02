@@ -33,7 +33,7 @@ pipeline{
                 }
             }
 
-//             stage ('upload artifect to S3 bucket'){
+//             stage ('upload to S3 bucket'){
 //                  steps{
 //                         withAWS(credentials: 'S3_Backend', region: 'us-east-1') {
                                               echo 'Uploading to S3...'
